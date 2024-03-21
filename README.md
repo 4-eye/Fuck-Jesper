@@ -1,2 +1,4 @@
-# Fuck-Jesper
-in the memory of jesper. rip 2024
+#Fuck-Jesper
+#original taste
+#free pales...finland
+#99% recycled plastic
