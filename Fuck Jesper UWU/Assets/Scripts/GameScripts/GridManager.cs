@@ -1,20 +1,18 @@
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
-{
+{ 
     public GameObject stage; // Reference to the stage GameObject
     public int gridSizeX, gridSizeY;
     private Vector3[,] grid; // Corrected to Vector3
-    private float cellSize;
+    public float cellSize;
 
-    void Start()
+    void Awake()
     {
         // Calculate cell size by dividing the stage's length and width by the grid size
         float stageLength = stage.transform.localScale.x;
         float stageWidth = stage.transform.localScale.y;
         cellSize = Mathf.Min(stageLength / gridSizeX, stageWidth / gridSizeY);
-        Debug.Log(stageLength);
-        Debug.Log(stageWidth);
 
         grid = new Vector3[gridSizeX, gridSizeY];
         for (int x = 0; x < gridSizeX; x++)
@@ -31,21 +29,24 @@ public class GridManager : MonoBehaviour
 
     public Vector3 GetGridPosition(int x, int y)
     {
-        return grid[x, y];
+        Vector3 position = grid[x, y];
+        position.z -= 1; // Decrease the z value by 1
+        return position;
     }
 
-    void OnDrawGizmos()
-    {
-        if (grid != null)
-        {
-            for (int x = 0; x < gridSizeX; x++)
-            {
-                for (int y = 0; y < gridSizeY; y++)
-                {
-                    Gizmos.DrawWireCube(grid[x, y], new Vector3(cellSize, cellSize, 0));
-                }
-            }
-        }
-    }
+    // showing grid for debuggin purposes
+    // void OnDrawGizmos()
+    // {
+    //     if (grid != null)
+    //     {
+    //         for (int x = 0; x < gridSizeX; x++)
+    //         {
+    //             for (int y = 0; y < gridSizeY; y++)
+    //             {
+    //                 Gizmos.DrawWireCube(grid[x, y], new Vector3(cellSize, cellSize, 0));
+    //             }
+    //         }
+    //     }
+    // }
 
 }
