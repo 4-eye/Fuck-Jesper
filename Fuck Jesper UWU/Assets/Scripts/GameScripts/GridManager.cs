@@ -25,6 +25,7 @@ public class GridManager : MonoBehaviour
                 grid[x, y] = new Vector3(adjustedX, adjustedY, 0);
             }
         }
+        Debug.Log(cellSize);
     }
 
     public Vector3 GetGridPosition(int x, int y)
