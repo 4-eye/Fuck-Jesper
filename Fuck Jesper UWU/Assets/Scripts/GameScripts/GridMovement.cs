@@ -41,11 +41,24 @@ public class GridMovement : MonoBehaviour
 
     void Move(int x, int y)
     {
-        Vector3 newPosition = gridManager.GetGridPosition(characterPossition[0]+x, characterPossition[1]+y);
-        transform.position = newPosition;
+        int newX = characterPossition[0] + x;
+        int newY = characterPossition[1] + y;
+
+        //Debug.Log(newX);
+        //Debug.Log(newY);
+
+        if ( (newX == 0) || (newX == 11) ||
+             (newY == 0) || (newY == 11) )
+        {
+            return;
+        }
 
         // save grid position
-        characterPossition[0] += x;
-        characterPossition[1] += y;
+        characterPossition[0] = newX;
+        characterPossition[1] = newY;
+
+        Vector3 newPosition = gridManager.GetGridPosition(newX, newY);
+        transform.position = newPosition;
+
     }
 }
