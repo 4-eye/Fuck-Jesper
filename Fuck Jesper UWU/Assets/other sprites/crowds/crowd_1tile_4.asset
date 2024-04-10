@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: crowd_2tile_2
+  m_Name: crowd_1tile_4
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 1d7b09b1cb46b6e40b1737aaf0cf3652, type: 3}
+  m_Sprite: {fileID: 21300000, guid: eea8d19f1d3fc524fac5d9eafb4a0efb, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
