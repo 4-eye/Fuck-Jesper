@@ -5,7 +5,10 @@ public class GridMovement : MonoBehaviour
 {
     public GridManager gridManager;
     public float moveSpeed = 1f;
-    public int[] characterPosition;
+    public int[] characterGridPosition;
+    public float speed;
+    public Vector3 characterAbsolutePosition, targetPosition;
+    bool moving = false;
 
     private void Start()
     {
@@ -21,12 +24,21 @@ public class GridMovement : MonoBehaviour
         Vector3 newPosition = gridManager.GetGridPosition(gridPosition[0], gridPosition[1]);
         transform.position = newPosition;
 
+        // save absolute position to variable
+        characterAbsolutePosition = newPosition;
+
         // Save grid position
-        characterPosition = gridPosition;
+        characterGridPosition = gridPosition;
     }
 
     void Update()
     {
+        if (moving)
+        {
+            return;
+        }
+
+
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) )
         {
             Move(0, 1);
@@ -43,12 +55,13 @@ public class GridMovement : MonoBehaviour
         {
             Move(1, 0);
         }
+
     }
 
     void Move(int x, int y)
     {
-        int newX = characterPosition[0] + x;
-        int newY = characterPosition[1] + y;
+        int newX = characterGridPosition[0] + x;
+        int newY = characterGridPosition[1] + y;
 
         // Get grid size from GridManager
         int gridSizeX = gridManager.gridSizeX;
@@ -61,7 +74,7 @@ public class GridMovement : MonoBehaviour
         }
 
         // Raycast for collision detection
-        Vector3 currentGridPosition = gridManager.GetGridPosition(characterPosition[0], characterPosition[1]);
+        Vector3 currentGridPosition = gridManager.GetGridPosition(characterGridPosition[0], characterGridPosition[1]);
         Vector3 targetGridPosition = gridManager.GetGridPosition(newX, newY);
         float raycastLength = gridManager.cellSize; // Adjust if walls have different thickness
 
@@ -75,11 +88,31 @@ public class GridMovement : MonoBehaviour
         }
 
         // Update position logic if no collision
-        characterPosition[0] = newX;
-        characterPosition[1] = newY;
-        Vector3 newPosition = gridManager.GetGridPosition(newX, newY);
-        transform.position = newPosition;
+        characterGridPosition[0] = newX;
+        characterGridPosition[1] = newY;
+        targetPosition = gridManager.GetGridPosition(newX, newY);
+
+        //Vector3 nextPosition = Vector3.Lerp(characterAbsolutePosition, targetPosition, Time.deltaTime * speed);
+        //transform.position = nextPosition;
+
+        moving = true;
+
+       
+
+        // save absolute position to variable
+        //characterAbsolutePosition = targetPosition;
+
+        Debug.Log("Balls");
+        Debug.Log(Time.deltaTime);
     }
 
-   
+    private void FixedUpdate()
+    {
+        if (moving)
+            transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
+        if (transform.position == targetPosition)
+            moving = false;
+    }
+
+
 }
