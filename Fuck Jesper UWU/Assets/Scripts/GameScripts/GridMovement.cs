@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GridMovement : MonoBehaviour
 {
@@ -8,10 +9,16 @@ public class GridMovement : MonoBehaviour
     public int[] characterGridPosition;
     public float speed;
     public Vector3 characterAbsolutePosition, targetPosition;
+    public Animator Anime;
     bool moving = false;
+
+    private float startTimeStamp;
+    private float elapsedTime;
 
     private void Start()
     {
+        Anime = GetComponent<Animator>();
+
         // Check for valid GridManager reference
         if (gridManager == null)
         {
@@ -29,31 +36,42 @@ public class GridMovement : MonoBehaviour
 
         // Save grid position
         characterGridPosition = gridPosition;
+
     }
 
     void Update()
     {
-        if (moving)
+
+        if (moving) 
         {
             return;
         }
 
-
         if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) )
         {
+            Anime.SetTrigger("GOJO_up");
+            // Record the start time stamp
+            startTimeStamp = Time.time;
             Move(0, 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        {
+            Anime.SetTrigger("GOJO_right");
+            Move(1, 0);
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
+            Anime.SetTrigger("GOJO_down");
             Move(0, -1);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
+            Anime.SetTrigger("GOJO_left");
             Move(-1, 0);
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        else
         {
-            Move(1, 0);
+            Anime.SetTrigger("GOJO_Idle");
         }
 
     }
@@ -83,9 +101,13 @@ public class GridMovement : MonoBehaviour
         // Check for collision with a wall (assuming "Wall" layer and tag)
         if (hit.collider != null && hit.collider.gameObject.CompareTag("Wall"))
         {
-            Debug.Log("Collision detected!");
+
+            // Debug.Log("Collision detected!");
+
             return; // Prevent movement if there's a collision
         }
+
+
 
         // Update position logic if no collision
         characterGridPosition[0] = newX;
@@ -102,8 +124,8 @@ public class GridMovement : MonoBehaviour
         // save absolute position to variable
         //characterAbsolutePosition = targetPosition;
 
-        Debug.Log("Balls");
-        Debug.Log(Time.deltaTime);
+        // Debug.Log("Balls");
+        // Debug.Log(Time.deltaTime);
     }
 
     private void FixedUpdate()

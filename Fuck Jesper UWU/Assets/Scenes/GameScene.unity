@@ -954,6 +954,7 @@ MonoBehaviour:
   speed: 23
   characterAbsolutePosition: {x: 0, y: 0, z: 0}
   targetPosition: {x: 0, y: 0, z: 0}
+  Anime: {fileID: 0}
 --- !u!212 &1768870840
 SpriteRenderer:
   m_ObjectHideFlags: 0
