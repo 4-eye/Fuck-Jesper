@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement; // For changing scenes
 
 public class GridMovement : MonoBehaviour
 {
     public GridManager gridManager;
+    public SpawnCharacter spawnCharacter;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
     public float speed;
@@ -27,7 +29,8 @@ public class GridMovement : MonoBehaviour
         }
 
         // Proceed with execution after GridManager's Start() finishes
-        int[] gridPosition = { 3, 1 };
+        int[] gridPosition = spawnCharacter.GetSpawnPosition();
+
         Vector3 newPosition = gridManager.GetGridPosition(gridPosition[0], gridPosition[1]);
         transform.position = newPosition;
 
@@ -112,6 +115,11 @@ public class GridMovement : MonoBehaviour
         // Update position logic if no collision
         characterGridPosition[0] = newX;
         characterGridPosition[1] = newY;
+
+        if (newX == 2 && newY == 10) 
+        {
+            SceneManager.LoadScene(2);
+        }
         targetPosition = gridManager.GetGridPosition(newX, newY);
 
         //Vector3 nextPosition = Vector3.Lerp(characterAbsolutePosition, targetPosition, Time.deltaTime * speed);
