@@ -1149,6 +1149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridManager: {fileID: 2122791795}
   spawnCharacter: {fileID: 2122791798}
+  finishLevel: {fileID: 2122791799}
+  level: {fileID: 2122791800}
   moveSpeed: 1
   characterGridPosition: 
   speed: 23
@@ -1671,6 +1673,8 @@ GameObject:
   - component: {fileID: 2122791796}
   - component: {fileID: 2122791795}
   - component: {fileID: 2122791798}
+  - component: {fileID: 2122791799}
+  - component: {fileID: 2122791800}
   m_Layer: 0
   m_Name: 10x10stage
   m_TagString: Untagged
@@ -1775,6 +1779,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnPositionX: 9
   SpawnPositionY: 1
+--- !u!114 &2122791799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122791794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 160c614c623f9184bad21553c9493cb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EndLevelPositionX: 2
+  EndLevelPositionY: 10
+--- !u!114 &2122791800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122791794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 939238d2cbea13f46a105f953c361f6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LevelSceneNum: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
