@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // For changing scenes
+using UnityEngine.Tilemaps;
 
 public class GridMovement : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GridMovement : MonoBehaviour
     public SpawnCharacter spawnCharacter;
     public FinishLevel finishLevel;
     public Level level;
+    public Tilemap tilemap;
+    public TileBase tileToSpawn;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
     public float speed;
@@ -52,24 +55,24 @@ public class GridMovement : MonoBehaviour
             return;
         }
 
-        if (Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.W) )
+        if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W) )
         {
             Anime.SetTrigger("GOJO_up");
             // Record the start time stamp
             startTimeStamp = Time.time;
             Move(0, 1);
         }
-        else if (Input.GetKey(KeyCode.RightArrow) || Input.GetKey(KeyCode.D))
+        else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             Anime.SetTrigger("GOJO_right");
             Move(1, 0);
         }
-        else if (Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             Anime.SetTrigger("GOJO_down");
             Move(0, -1);
         }
-        else if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             Anime.SetTrigger("GOJO_left");
             Move(-1, 0);
@@ -111,6 +114,44 @@ public class GridMovement : MonoBehaviour
 
             return; // Prevent movement if there's a collision
         }
+        else if (hit.collider != null && hit.collider.gameObject.CompareTag("MovableBox"))
+        {
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+
+            Debug.Log(moveDirectionX);
+            Debug.Log(moveDirectionY);
+
+            Vector3Int currentCell = tilemap.WorldToCell(transform.position); // Get current cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target cell position
+
+            Debug.Log(currentCell);
+            Debug.Log(targetCell);
+            Debug.Log(tilemap.HasTile(targetCell));
+
+
+            if (tilemap.HasTile(targetCell))
+            {
+                tilemap.SetTile(targetCell, null);
+                
+                tilemap.SetTile(targetCell + direction, tileToSpawn);
+                // Calculate the center position of the target cell
+                // Vector3 boxNewPosition = tilemap.GetCellCenterWorld(targetCell + direction);
+
+                // Move the box to the center of the target cell
+                // hit.collider.transform.position = boxNewPosition;
+            }
+
+
+            
+            // Move the box in the same direction
+            // Vector3 boxNewPosition = hit.collider.transform.position + new Vector3(x, y, 0);
+            // hit.collider.transform.position = boxNewPosition;
+        }
 
 
 
@@ -128,7 +169,6 @@ public class GridMovement : MonoBehaviour
         //transform.position = nextPosition;
 
         moving = true;
-
        
 
         // save absolute position to variable
