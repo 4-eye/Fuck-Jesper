@@ -106,6 +106,9 @@ public class GridMovement : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength);
 
+        int layerMask = LayerMask.GetMask("Walls");
+        RaycastHit2D hitTroughBox = Physics2D.Raycast(currentGridPosition, (targetGridPosition - currentGridPosition) * 1.5f, raycastLength * 1.5f, layerMask);
+
         // Check for collision with a wall (assuming "Wall" layer and tag)
         if (hit.collider != null && hit.collider.gameObject.CompareTag("Wall"))
         {
@@ -116,6 +119,15 @@ public class GridMovement : MonoBehaviour
         }
         else if (hit.collider != null && hit.collider.gameObject.CompareTag("MovableBox"))
         {
+            if (hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall")) 
+            {
+                Debug.Log("bs");
+                
+                return; // Prevent movement if there's wall behind a movable box    
+            }
+
+            Debug.Log(hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall"));
+
             // Determine movement direction
             int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
             int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
@@ -123,16 +135,8 @@ public class GridMovement : MonoBehaviour
             // Convert the individual X and Y directions into a Vector3Int
             Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
 
-            Debug.Log(moveDirectionX);
-            Debug.Log(moveDirectionY);
-
             Vector3Int currentCell = tilemap.WorldToCell(transform.position); // Get current (character's) cell position
             Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
-
-            Debug.Log(currentCell);
-            Debug.Log(targetCell);
-            Debug.Log(tilemap.HasTile(targetCell));
-
 
             if (tilemap.HasTile(targetCell))
             {
