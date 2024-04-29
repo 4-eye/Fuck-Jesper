@@ -126,8 +126,8 @@ public class GridMovement : MonoBehaviour
             Debug.Log(moveDirectionX);
             Debug.Log(moveDirectionY);
 
-            Vector3Int currentCell = tilemap.WorldToCell(transform.position); // Get current cell position
-            Vector3Int targetCell = currentCell + direction; // Calculate target cell position
+            Vector3Int currentCell = tilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
             Debug.Log(currentCell);
             Debug.Log(targetCell);
@@ -136,21 +136,13 @@ public class GridMovement : MonoBehaviour
 
             if (tilemap.HasTile(targetCell))
             {
+                // Delete box
                 tilemap.SetTile(targetCell, null);
                 
+                // Spawn box on a new place
                 tilemap.SetTile(targetCell + direction, tileToSpawn);
-                // Calculate the center position of the target cell
-                // Vector3 boxNewPosition = tilemap.GetCellCenterWorld(targetCell + direction);
-
-                // Move the box to the center of the target cell
-                // hit.collider.transform.position = boxNewPosition;
+                
             }
-
-
-            
-            // Move the box in the same direction
-            // Vector3 boxNewPosition = hit.collider.transform.position + new Vector3(x, y, 0);
-            // hit.collider.transform.position = boxNewPosition;
         }
 
 
