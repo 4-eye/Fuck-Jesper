@@ -10,7 +10,9 @@ public class GridMovement : MonoBehaviour
     public SpawnCharacter spawnCharacter;
     public FinishLevel finishLevel;
     public Level level;
-    public Tilemap tilemap;
+    public Tilemap BoxesTilemap;
+    public Tilemap KeysTilemap;
+    public Tilemap DoorsTilemap;
     public TileBase tileToSpawn;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
@@ -18,6 +20,7 @@ public class GridMovement : MonoBehaviour
     public Vector3 characterAbsolutePosition, targetPosition;
     public Animator Anime;
     bool moving = false;
+    bool hasKey = false;
 
     private float startTimeStamp;
     private float elapsedTime;
@@ -104,29 +107,21 @@ public class GridMovement : MonoBehaviour
         Vector3 targetGridPosition = gridManager.GetGridPosition(newX, newY);
         float raycastLength = gridManager.cellSize; // Adjust if walls have different thickness
 
-        RaycastHit2D hit = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength);
-
         int layerMask = LayerMask.GetMask("Walls");
-        RaycastHit2D hitTroughBox = Physics2D.Raycast(currentGridPosition, (targetGridPosition - currentGridPosition) * 1.5f, raycastLength * 1.5f, layerMask);
+
+        RaycastHit2D hitAny = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength);
+        RaycastHit2D hitWall = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength, layerMask);
+        // get collision trough a box
+        RaycastHit2D hitTroughBox = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength + 1.0f, layerMask);
 
         // Check for collision with a wall (assuming "Wall" layer and tag)
-        if (hit.collider != null && hit.collider.gameObject.CompareTag("Wall"))
+        if (hitWall.collider != null && hitWall.collider.gameObject.CompareTag("Wall"))
         {
-
-            // Debug.Log("Collision detected!");
-
             return; // Prevent movement if there's a collision
         }
-        else if (hit.collider != null && hit.collider.gameObject.CompareTag("MovableBox"))
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Door"))
         {
-            if (hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall")) 
-            {
-                Debug.Log("bs");
-                
-                return; // Prevent movement if there's wall behind a movable box    
-            }
-
-            Debug.Log(hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall"));
+            if (!hasKey) return; // Prevent movement if there's a collision with a door
 
             // Determine movement direction
             int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
@@ -135,16 +130,72 @@ public class GridMovement : MonoBehaviour
             // Convert the individual X and Y directions into a Vector3Int
             Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
 
-            Vector3Int currentCell = tilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int currentCell = DoorsTilemap.WorldToCell(transform.position); // Get current (character's) cell position
             Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
-            if (tilemap.HasTile(targetCell))
+            if (DoorsTilemap.HasTile(targetCell))
             {
+                // Retrieve the tile at the target cell
+                TileBase tile = DoorsTilemap.GetTile(targetCell);
+
+                Debug.Log(tile);
+
                 // Delete box
-                tilemap.SetTile(targetCell, null);
+                DoorsTilemap.SetTile(targetCell, null);
                 
                 // Spawn box on a new place
-                tilemap.SetTile(targetCell + direction, tileToSpawn);
+                // DoorsTilemap.SetTile(targetCell, tileToSpawn);
+                
+            }
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Key")) 
+        {
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+
+            Vector3Int currentCell = KeysTilemap.WorldToCell(transform.position); // Get current (character's) cell position    
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+
+            if (KeysTilemap.HasTile(targetCell))
+            {
+                // Delete box
+                KeysTilemap.SetTile(targetCell, null);
+
+                hasKey = true;
+            }
+            
+            Debug.Log(currentCell);
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("MovableBox"))
+        {
+            if (hitTroughBox.collider != null && hitTroughBox.collider.gameObject.CompareTag("Wall")) 
+            {                
+                return; // Prevent movement if there's wall behind a movable box    
+            }
+
+            // Debug.Log(hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall"));
+
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+
+            Vector3Int currentCell = BoxesTilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+
+            if (BoxesTilemap.HasTile(targetCell))
+            {
+                // Delete box
+                BoxesTilemap.SetTile(targetCell, null);
+                
+                // Spawn box on a new place
+                BoxesTilemap.SetTile(targetCell + direction, tileToSpawn);
                 
             }
         }
