@@ -14,6 +14,7 @@ public class GridMovement : MonoBehaviour
     public Tilemap KeysTilemap;
     public Tilemap DoorsTilemap;
     public TileBase tileToSpawn;
+    public TileBase OpenDoorTile;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
     public float speed;
@@ -133,19 +134,25 @@ public class GridMovement : MonoBehaviour
             Vector3Int currentCell = DoorsTilemap.WorldToCell(transform.position); // Get current (character's) cell position
             Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
-            if (DoorsTilemap.HasTile(targetCell))
-            {
-                // Retrieve the tile at the target cell
-                TileBase tile = DoorsTilemap.GetTile(targetCell);
 
-                Debug.Log(tile);
+            // Retrieve the tile at the target cell
+            TileBase tile = DoorsTilemap.GetTile(targetCell);
 
-                // Delete box
-                DoorsTilemap.SetTile(targetCell, null);
-                
-                // Spawn box on a new place
-                // DoorsTilemap.SetTile(targetCell, tileToSpawn);
-                
+            if (tile.name == "dog_door_huge") {
+                if (DoorsTilemap.HasTile(targetCell))
+                {
+                    
+
+                    // Delete box
+                    DoorsTilemap.SetTile(targetCell, null);
+                    
+                    // Spawn box on a new place
+                    DoorsTilemap.SetTile(targetCell, OpenDoorTile);
+
+                    // stop movement before door is open
+                    return;
+                    
+                }
             }
         }
         else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Key")) 
