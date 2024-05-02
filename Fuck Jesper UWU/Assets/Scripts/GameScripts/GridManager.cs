@@ -35,18 +35,18 @@ public class GridManager : MonoBehaviour
     }
 
     // showing grid for debuggin purposes
-    // void OnDrawGizmos()
-    // {
-    //     if (grid != null)
-    //     {
-    //         for (int x = 0; x < gridSizeX; x++)
-    //         {
-    //             for (int y = 0; y < gridSizeY; y++)
-    //             {
-    //                 Gizmos.DrawWireCube(grid[x, y], new Vector3(cellSize, cellSize, 0));
-    //             }
-    //         }
-    //     }
-    // }
+    //void OnDrawGizmos()
+    //{
+    //    if (grid != null)
+    //    {
+    //        for (int x = 0; x < gridSizeX; x++)
+    //        {
+    //            for (int y = 0; y < gridSizeY; y++)
+    //            {
+    //                Gizmos.DrawWireCube(grid[x, y], new Vector3(cellSize, cellSize, 0));
+    //            }
+    //        }
+    //    }
+    //}
 
 }
