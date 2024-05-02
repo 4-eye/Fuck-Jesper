@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class UI_manager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void AddKeyUI()
     {
-        
+        Debug.Log("key added");
     }
 
-    // Update is called once per frame
-    void Update()
+    public void DeleteKeyUI()
     {
-        
+        Debug.Log("key deleted");
     }
+
 }

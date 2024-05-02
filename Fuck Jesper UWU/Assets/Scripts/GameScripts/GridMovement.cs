@@ -7,6 +7,7 @@ using UnityEngine.Tilemaps;
 public class GridMovement : MonoBehaviour
 {
     public GridManager gridManager;
+    public UI_manager ui_manager;
     public SpawnCharacter spawnCharacter;
     public FinishLevel finishLevel;
     public Level level;
@@ -145,6 +146,9 @@ public class GridMovement : MonoBehaviour
 
                     // Delete box
                     DoorsTilemap.SetTile(targetCell, null);
+
+                    // Delete key from UI
+                    ui_manager.DeleteKeyUI();
                     
                     // Spawn box on a new place
                     DoorsTilemap.SetTile(targetCell, OpenDoorTile);
@@ -173,6 +177,7 @@ public class GridMovement : MonoBehaviour
                 KeysTilemap.SetTile(targetCell, null);
 
                 hasKey = true;
+                ui_manager.AddKeyUI();
             }
             
             Debug.Log(currentCell);

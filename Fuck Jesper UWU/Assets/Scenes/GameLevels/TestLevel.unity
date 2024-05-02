@@ -2779,6 +2779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridManager: {fileID: 2122791795}
+  ui_manager: {fileID: 2122791801}
   spawnCharacter: {fileID: 2122791798}
   finishLevel: {fileID: 2122791799}
   level: {fileID: 2122791800}
@@ -3323,6 +3324,7 @@ GameObject:
   - component: {fileID: 2122791798}
   - component: {fileID: 2122791799}
   - component: {fileID: 2122791800}
+  - component: {fileID: 2122791801}
   m_Layer: 0
   m_Name: 10x10stage
   m_TagString: Untagged
@@ -3454,6 +3456,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelSceneNum: 2
+--- !u!114 &2122791801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122791794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4520d17e9273ea343a52d5b2dc5dce67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
