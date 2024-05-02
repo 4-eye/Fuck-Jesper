@@ -8,6 +8,7 @@ TagManager:
   - MovableBox
   - Door
   - Key
+  - JumpPad
   layers:
   - Default
   - TransparentFX
