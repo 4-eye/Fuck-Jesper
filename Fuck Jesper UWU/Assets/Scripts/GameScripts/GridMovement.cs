@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // For changing scenes
 using UnityEngine.Tilemaps;
+using System;
 
 public class GridMovement : MonoBehaviour
 {
@@ -139,6 +140,9 @@ public class GridMovement : MonoBehaviour
             // Retrieve the tile at the target cell
             TileBase tile = DoorsTilemap.GetTile(targetCell);
 
+
+            
+
             if (tile.name == "dog_door_huge") {
                 if (DoorsTilemap.HasTile(targetCell))
                 {
@@ -179,8 +183,6 @@ public class GridMovement : MonoBehaviour
                 hasKey = true;
                 ui_manager.AddKeyUI();
             }
-            
-            Debug.Log(currentCell);
         }
         else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("MovableBox"))
         {
@@ -211,8 +213,26 @@ public class GridMovement : MonoBehaviour
                 
             }
         }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("JumpPad"))
+        {
+            
+            
+            int absX = Math.Abs(x);
+            int absY = Math.Abs(y);
+            Debug.Log(absX);
+            Debug.Log(absY);
 
-
+            characterGridPosition[0] + x;
+            if (absX > absY)
+            {
+                newX = (absX + 2) * Math.Sign(characterGridPosition[0]);
+            }
+            else
+            {
+                newY = (absY + 2) * Math.Sign(characterGridPosition[1]);
+            }
+            
+        }
 
         // Update position logic if no collision
         characterGridPosition[0] = newX;
@@ -224,16 +244,10 @@ public class GridMovement : MonoBehaviour
         }
         targetPosition = gridManager.GetGridPosition(newX, newY);
 
-        //Vector3 nextPosition = Vector3.Lerp(characterAbsolutePosition, targetPosition, Time.deltaTime * speed);
-        //transform.position = nextPosition;
 
         moving = true;
        
 
-        // save absolute position to variable
-        //characterAbsolutePosition = targetPosition;
-
-        // Debug.Log("Balls");
         // Debug.Log(Time.deltaTime);
     }
 
