@@ -13,5 +13,6 @@ public class Menu : MonoBehaviour
     public void OnQuitButton ()
     {
         Application.Quit();
+        Debug.Log("QUITTING.....*");
     }
 }
