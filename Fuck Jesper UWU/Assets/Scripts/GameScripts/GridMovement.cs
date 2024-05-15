@@ -8,7 +8,7 @@ using System;
 public class GridMovement : MonoBehaviour
 {
     public GridManager gridManager;
-    public UI_manager ui_manager;
+    // public UI_manager ui_manager;
     public SpawnCharacter spawnCharacter;
     public FinishLevel finishLevel;
     public Level level;
@@ -152,7 +152,7 @@ public class GridMovement : MonoBehaviour
                     DoorsTilemap.SetTile(targetCell, null);
 
                     // Delete key from UI
-                    ui_manager.DeleteKeyUI();
+                    // ui_manager.DeleteKeyUI();
                     
                     // Spawn box on a new place
                     DoorsTilemap.SetTile(targetCell, OpenDoorTile);
@@ -181,7 +181,7 @@ public class GridMovement : MonoBehaviour
                 KeysTilemap.SetTile(targetCell, null);
 
                 hasKey = true;
-                ui_manager.AddKeyUI();
+                // ui_manager.AddKeyUI();
             }
         }
         else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("MovableBox"))
@@ -222,14 +222,13 @@ public class GridMovement : MonoBehaviour
             Debug.Log(absX);
             Debug.Log(absY);
 
-            characterGridPosition[0] + x;
             if (absX > absY)
             {
-                newX = (absX + 2) * Math.Sign(characterGridPosition[0]);
+                newX = ((absX + 2) * x) + characterGridPosition[0];
             }
             else
             {
-                newY = (absY + 2) * Math.Sign(characterGridPosition[1]);
+                newY = ((absY + 2) * y) + characterGridPosition[1];
             }
             
         }
