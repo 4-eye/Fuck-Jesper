@@ -11,6 +11,7 @@ public class UI_manager : MonoBehaviour
     
     public void AddKeyUI()
     {
+        Debug.Log("key added");
         
         keyCounter += 1;
         Keys_TextMeshPro.text = keyCounter.ToString();
@@ -18,6 +19,7 @@ public class UI_manager : MonoBehaviour
 
     public void DeleteKeyUI()
     {
+        Debug.Log("key deleted");
         keyCounter -= 1;
         Keys_TextMeshPro.text = keyCounter.ToString();
     }
