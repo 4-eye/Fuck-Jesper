@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // For changing scenes
 using UnityEngine.Tilemaps;
+using UnityEngine.SceneManagement;
 using System;
 
 public class GridMovement : MonoBehaviour
@@ -24,6 +25,8 @@ public class GridMovement : MonoBehaviour
     public Animator Anime;
     bool moving = false;
     int keyCounter = 0;
+
+    private LineRenderer lineRenderer;
 
     private float startTimeStamp;
     private float elapsedTime;
@@ -51,10 +54,29 @@ public class GridMovement : MonoBehaviour
         // Save grid position
         characterGridPosition = gridPosition;
 
+
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        lineRenderer.positionCount = 2;
+        lineRenderer.startWidth = 0.1f;
+        lineRenderer.endWidth = 0.1f;
+        lineRenderer.startColor = Color.red;
+        lineRenderer.endColor = Color.red;
+        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+
     }
 
     void Update()
     {
+
+        // Check if the "R" key is pressed
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            // Get the active scene
+            Scene activeScene = SceneManager.GetActiveScene();
+
+            // Reload the active scene
+            SceneManager.LoadScene(activeScene.name);
+        }
 
         if (moving) 
         {
@@ -114,156 +136,161 @@ public class GridMovement : MonoBehaviour
 
         RaycastHit2D hitAny = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength);
         RaycastHit2D hitWall = Physics2D.Raycast(currentGridPosition, targetGridPosition - currentGridPosition, raycastLength, layerMask);
+
+        
         Vector3 raycastPointPosition;
 
         int absX = Math.Abs(x);
         int absY = Math.Abs(y);
 
-        int X_GridPosition = ((absX + 2) * x) + characterGridPosition[0];
-        Debug.Log(X_GridPosition);
-        float asd = 32.123f;
-        Debug.Log(characterGridPosition[0].GetType().Name);
-        Debug.Log(X_GridPosition.GetType().Name);
-        
-        //raycastPointPosition = gridManager.GetGridPosition(X_GridPosition, currentGridPosition[1]);
+        if (absX > absY)
+        {
+            int X_GridPosition = ((absX + 1) * x) + characterGridPosition[0];
 
+            raycastPointPosition = gridManager.GetGridPosition(X_GridPosition, characterGridPosition[1]);
+        }
+        else
+        {
+            int Y_GridPosition = ((absY + 1) * y) + characterGridPosition[1];
 
-        // if (absX > absY)
-        // {
-        //     int X_GridPosition = ((absX + 2) * x) + characterGridPosition[0];
-        //     Debug.Log(X_GridPosition);
+            raycastPointPosition = gridManager.GetGridPosition(characterGridPosition[0], Y_GridPosition);
+        }
 
-        //     raycastPointPosition = gridManager.GetGridPosition(X_GridPosition, currentGridPosition[1]);
-        // }
-        // else
-        // {
-        //     int Y_GridPosition = ((absY + 2) * y) + characterGridPosition[1];
+        // Only for testing purposes
+        Vector3 raycastPointPosition2 = raycastPointPosition;
+        raycastPointPosition2.y += 0.5f;
 
-        //     raycastPointPosition = gridManager.GetGridPosition(currentGridPosition[0], Y_GridPosition);
-        // }
+        // Set the positions of the line
+        lineRenderer.SetPosition(0, raycastPointPosition);
+        lineRenderer.SetPosition(1, raycastPointPosition2);
+
 
         // get collision trough a box
-        // RaycastHit2D hitTroughBox = Physics2D.Raycast(raycastPointPosition, raycastPointPosition, raycastLength + 1.0f);
+        RaycastHit2D hitTroughBox = Physics2D.Raycast(raycastPointPosition, raycastPointPosition, 0.0001f);
 
 
 
-        // // Check for collision with a wall (assuming "Wall" layer and tag)
-        // if (hitWall.collider != null && hitWall.collider.gameObject.CompareTag("Wall"))
-        // {
-        //     return; // Prevent movement if there's a collision
-        // }
-        // else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Door"))
-        // {
-        //     if (keyCounter == 0) return; // Prevent movement if there's a collision with a door
+        // Check for collision with a wall (assuming "Wall" layer and tag)
+        if (hitWall.collider != null && hitWall.collider.gameObject.CompareTag("Wall"))
+        {
+            return; // Prevent movement if there's a collision
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Door"))
+        {
+            if (keyCounter == 0) return; // Prevent movement if there's a collision with a door
 
-        //     // Determine movement direction
-        //     int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
-        //     int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
 
-        //     // Convert the individual X and Y directions into a Vector3Int
-        //     Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
 
-        //     Vector3Int currentCell = DoorsTilemap.WorldToCell(transform.position); // Get current (character's) cell position
-        //     Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+            Vector3Int currentCell = DoorsTilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
 
-        //     // Retrieve the tile at the target cell
-        //     TileBase tile = DoorsTilemap.GetTile(targetCell);
+            // Retrieve the tile at the target cell
+            TileBase tile = DoorsTilemap.GetTile(targetCell);
 
 
             
 
-        //     if (tile.name == "dog_door_huge") {
-        //         if (DoorsTilemap.HasTile(targetCell))
-        //         {
+            if (tile.name == "dog_door_huge") {
+                if (DoorsTilemap.HasTile(targetCell))
+                {
                     
 
-        //             // Delete box
-        //             DoorsTilemap.SetTile(targetCell, null);
+                    // Delete box
+                    DoorsTilemap.SetTile(targetCell, null);
 
-        //             // Delete key from UI
-        //             ui_manager.DeleteKeyUI();
+                    // Delete key from UI
+                    ui_manager.DeleteKeyUI();
 
-        //             // Decrement key counter
-        //             keyCounter -= 1;
+                    // Decrement key counter
+                    keyCounter -= 1;
                     
-        //             // Spawn box on a new place
-        //             DoorsTilemap.SetTile(targetCell, OpenDoorTile);
+                    // Spawn box on a new place
+                    DoorsTilemap.SetTile(targetCell, OpenDoorTile);
 
-        //             // stop movement before door is open
-        //             return;
+                    // stop movement before door is open
+                    return;
                     
-        //         }
-        //     }
-        // }
-        // else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Key")) 
-        // {
-        //     // Determine movement direction
-        //     int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
-        //     int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+                }
+            }
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Key")) 
+        {
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
 
-        //     // Convert the individual X and Y directions into a Vector3Int
-        //     Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
 
-        //     Vector3Int currentCell = KeysTilemap.WorldToCell(transform.position); // Get current (character's) cell position    
-        //     Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+            Vector3Int currentCell = KeysTilemap.WorldToCell(transform.position); // Get current (character's) cell position    
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
-        //     if (KeysTilemap.HasTile(targetCell))
-        //     {
-        //         // Delete box
-        //         KeysTilemap.SetTile(targetCell, null);
+            if (KeysTilemap.HasTile(targetCell))
+            {
+                // Delete box
+                KeysTilemap.SetTile(targetCell, null);
 
-        //         keyCounter += 1;
-        //         ui_manager.AddKeyUI();
-        //     }
-        // }
-        // else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("MovableBox"))
-        // {
-        //     if (hitTroughBox.collider != null) 
-        //     {
-        //         Debug.Log("we are here");
-        //         if (hitTroughBox.collider.gameObject.CompareTag("MovableBox"))
-        //         {                
-        //             return; // Prevent movement if there's wall behind a movable box    
-        //         }
+                keyCounter += 1;
+                ui_manager.AddKeyUI();
+            }
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("MovableBox"))
+        {
+            if (hitTroughBox.collider != null) 
+            {
+                Debug.Log("we are here");
+                if (hitTroughBox.collider.gameObject.CompareTag("Wall")       ||
+                    hitTroughBox.collider.gameObject.CompareTag("MovableBox") ||
+                    hitTroughBox.collider.gameObject.CompareTag("Door")       ||
+                    hitTroughBox.collider.gameObject.CompareTag("Key")        ||
+                    hitTroughBox.collider.gameObject.CompareTag("JumpPad"))
+                {                
+                    return; // Prevent movement if there's wall behind a movable box    
+                }
 
-        //     }
+            }
 
-        //     // Debug.Log(hitTroughBox.collider != null && hit.collider.gameObject.CompareTag("Wall"));
+            // Then move box if none encountered
 
-        //     // Determine movement direction
-        //     int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
-        //     int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
 
-        //     // Convert the individual X and Y directions into a Vector3Int
-        //     Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
 
-        //     Vector3Int currentCell = BoxesTilemap.WorldToCell(transform.position); // Get current (character's) cell position
-        //     Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+            Vector3Int currentCell = BoxesTilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
 
-        //     if (BoxesTilemap.HasTile(targetCell))
-        //     {
-        //         // Delete box
-        //         BoxesTilemap.SetTile(targetCell, null);
+            if (BoxesTilemap.HasTile(targetCell))
+            {
+                // Delete box
+                BoxesTilemap.SetTile(targetCell, null);
                 
-        //         // Spawn box on a new place
-        //         BoxesTilemap.SetTile(targetCell + direction, tileToSpawn);
+                // Spawn box on a new place
+                BoxesTilemap.SetTile(targetCell + direction, tileToSpawn);
                 
-        //     }
-        // }
-        // else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("JumpPad"))
-        // {
+            }
+        }
+        else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("JumpPad"))
+        {
 
-        //     if (absX > absY)
-        //     {
-        //         newX = ((absX + 2) * x) + characterGridPosition[0];
-        //     }
-        //     else
-        //     {
-        //         newY = ((absY + 2) * y) + characterGridPosition[1];
-        //     }
+            if (absX > absY)
+            {
+                newX = ((absX + 2) * x) + characterGridPosition[0];
+            }
+            else
+            {
+                newY = ((absY + 2) * y) + characterGridPosition[1];
+            }
             
-        // }
+        }
 
         // Update position logic if no collision
         characterGridPosition[0] = newX;
