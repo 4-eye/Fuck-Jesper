@@ -9,4 +9,9 @@ public class Level : MonoBehaviour
     {
         SceneManager.LoadScene(LevelSceneNum);
     }
+
+    public void Switch(int LevelSceneNum)
+    {
+        SceneManager.LoadScene(LevelSceneNum);
+    }
 }

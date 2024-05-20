@@ -26,7 +26,9 @@ public class GridMovement : MonoBehaviour
     bool moving = false;
     int keyCounter = 0;
 
-    private LineRenderer lineRenderer;
+
+    // Debuging
+    // private LineRenderer lineRenderer;
 
     private float startTimeStamp;
     private float elapsedTime;
@@ -54,14 +56,16 @@ public class GridMovement : MonoBehaviour
         // Save grid position
         characterGridPosition = gridPosition;
 
+        Debug.Log(PauseMenu.GameIsPaused);
 
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
-        lineRenderer.positionCount = 2;
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-        lineRenderer.startColor = Color.red;
-        lineRenderer.endColor = Color.red;
-        lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
+        // Debuging
+        // lineRenderer = gameObject.AddComponent<LineRenderer>();
+        // lineRenderer.positionCount = 2;
+        // lineRenderer.startWidth = 0.1f;
+        // lineRenderer.endWidth = 0.1f;
+        // lineRenderer.startColor = Color.red;
+        // lineRenderer.endColor = Color.red;
+        // lineRenderer.material = new Material(Shader.Find("Sprites/Default"));
 
     }
 
@@ -156,13 +160,14 @@ public class GridMovement : MonoBehaviour
             raycastPointPosition = gridManager.GetGridPosition(characterGridPosition[0], Y_GridPosition);
         }
 
-        // Only for testing purposes
-        Vector3 raycastPointPosition2 = raycastPointPosition;
-        raycastPointPosition2.y += 0.5f;
+        // Debuging
+        // // Only for testing purposes
+        // Vector3 raycastPointPosition2 = raycastPointPosition;
+        // raycastPointPosition2.y += 0.5f;
 
-        // Set the positions of the line
-        lineRenderer.SetPosition(0, raycastPointPosition);
-        lineRenderer.SetPosition(1, raycastPointPosition2);
+        // // Set the positions of the line
+        // lineRenderer.SetPosition(0, raycastPointPosition);
+        // lineRenderer.SetPosition(1, raycastPointPosition2);
 
 
         // get collision trough a box
