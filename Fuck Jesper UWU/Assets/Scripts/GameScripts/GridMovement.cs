@@ -55,8 +55,6 @@ public class GridMovement : MonoBehaviour
         // Save grid position
         characterGridPosition = gridPosition;
 
-        Debug.Log(PauseMenu.GameIsPaused);
-
         // Debuging
         // lineRenderer = gameObject.AddComponent<LineRenderer>();
         // lineRenderer.positionCount = 2;

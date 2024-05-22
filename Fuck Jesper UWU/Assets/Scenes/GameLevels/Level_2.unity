@@ -2231,6 +2231,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 366abc7f26dabac46a5aa16f37b08b55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameIsPaused: 0
   pauseMenuUI: {fileID: 442452088}
 --- !u!4 &541706750
 Transform:
@@ -2656,6 +2657,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: Level, Assembly-CSharp
         m_MethodName: Switch
         m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 541706749}
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: TimeScale1F
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
