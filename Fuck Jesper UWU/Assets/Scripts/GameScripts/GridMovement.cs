@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // For changing scenes
 using UnityEngine.Tilemaps;
-using UnityEngine.SceneManagement;
 using System;
 
 public class GridMovement : MonoBehaviour
