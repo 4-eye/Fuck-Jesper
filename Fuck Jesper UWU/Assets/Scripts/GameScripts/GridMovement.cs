@@ -17,6 +17,7 @@ public class GridMovement : MonoBehaviour
     public Tilemap DoorsTilemap;
     public TileBase tileToSpawn;
     public TileBase OpenDoorTile;
+    public SoundEffects soundEffects;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
     public float speed;
@@ -90,21 +91,33 @@ public class GridMovement : MonoBehaviour
             // Record the start time stamp
             startTimeStamp = Time.time;
             Move(0, 1);
+
+            // Play walking sound
+            soundEffects.RunWalkingSound();
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
             Anime.SetTrigger("GOJO_right");
             Move(1, 0);
+
+            // Play walking sound
+            soundEffects.RunWalkingSound();
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
         {
             Anime.SetTrigger("GOJO_down");
             Move(0, -1);
+
+            // Play walking sound
+            soundEffects.RunWalkingSound();
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
             Anime.SetTrigger("GOJO_left");
             Move(-1, 0);
+
+            // Play walking sound
+            soundEffects.RunWalkingSound();
         }
         else
         {
