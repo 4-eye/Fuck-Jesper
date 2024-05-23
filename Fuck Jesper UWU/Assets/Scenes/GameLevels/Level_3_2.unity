@@ -1987,6 +1987,7 @@ GameObject:
   - component: {fileID: 771444119}
   - component: {fileID: 771444118}
   - component: {fileID: 771444117}
+  - component: {fileID: 771444120}
   m_Layer: 0
   m_Name: JumpPadGridTilemap
   m_TagString: JumpPad
@@ -2087,7 +2088,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0.024999976, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
@@ -2106,9 +2107,9 @@ Tilemap:
   - first: {x: -2, y: -5, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -2116,9 +2117,9 @@ Tilemap:
   - first: {x: -3, y: 2, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
@@ -2126,29 +2127,51 @@ Tilemap:
   - first: {x: 1, y: 4, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
       dummyAlignment: 0
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 3
-    m_Data: {fileID: 11400000, guid: 1f17f9048e6c1d545a0fbf2e47ed8b4c, type: 2}
+    m_Data: {fileID: 11400000, guid: b40daf1cf9415074790e901e9fc1eb74, type: 2}
   m_TileSpriteArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   - m_RefCount: 3
-    m_Data: {fileID: 21300000, guid: b0eb5818564246741b3ab1d0b3c25717, type: 3}
+    m_Data: {fileID: 21300000, guid: 8c78e5d7179d8d64fb22548d9c60f7f0, type: 3}
   m_TileMatrixArray:
+  - m_RefCount: 0
+    m_Data:
+      e00: 3.6405233e-32
+      e01: 0
+      e02: 2.0328811e-19
+      e03: 2.0328811e-19
+      e10: 0
+      e11: 0
+      e12: 8.94e-43
+      e13: 8.94e-43
+      e20: 6.3733336e-28
+      e21: -3.2124544e+31
+      e22: -7.3573846e-29
+      e23: -2.7903403e-29
+      e30: 4.5904e-41
+      e31: 8.97e-43
+      e32: 8.94e-43
+      e33: 8.97e-43
   - m_RefCount: 3
     m_Data:
-      e00: 6.2
+      e00: 1
       e01: 0
       e02: 0
       e03: 0
       e10: 0
-      e11: 6.2
+      e11: 1
       e12: 0
       e13: 0
       e20: 0
@@ -2158,24 +2181,6 @@ Tilemap:
       e30: 0
       e31: 0
       e32: 0
-      e33: 1
-  - m_RefCount: 0
-    m_Data:
-      e00: -2.4584668e+16
-      e01: NaN
-      e02: -5.780594
-      e03: 0
-      e10: 3.24e-43
-      e11: NaN
-      e12: 4.5904e-41
-      e13: 0
-      e20: 1.4252e-40
-      e21: 0
-      e22: -2.4584633e+16
-      e23: 0
-      e30: 0
-      e31: 7.34684e-40
-      e32: 3.24e-43
       e33: 1
   m_TileColorArray:
   - m_RefCount: 3
@@ -2204,6 +2209,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!95 &771444120
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771444115}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7a837e7289886c14080a223042447f2a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &782376897
 GameObject:
   m_ObjectHideFlags: 0
@@ -2919,8 +2945,11 @@ MonoBehaviour:
   BoxesTilemap: {fileID: 1320985273}
   KeysTilemap: {fileID: 230496525}
   DoorsTilemap: {fileID: 718334362}
+  JumpPadTilemap: {fileID: 771444119}
   tileToSpawn: {fileID: 11400000, guid: ac7ed8e98154a694f8f5316522b82ed7, type: 2}
   OpenDoorTile: {fileID: 11400000, guid: f88bfbcb5ef3aed45beb5c5e7fef4e13, type: 2}
+  JumpPadAnimationTile: {fileID: 11400000, guid: 0ed47d6824f149d49a521e413194b74e, type: 2}
+  JumpPadStaticTile: {fileID: 11400000, guid: b40daf1cf9415074790e901e9fc1eb74, type: 2}
   soundEffects: {fileID: 2137495530}
   moveSpeed: 1
   characterGridPosition: 

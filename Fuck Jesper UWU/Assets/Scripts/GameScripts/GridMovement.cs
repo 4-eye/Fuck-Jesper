@@ -15,8 +15,11 @@ public class GridMovement : MonoBehaviour
     public Tilemap BoxesTilemap;
     public Tilemap KeysTilemap;
     public Tilemap DoorsTilemap;
+    public Tilemap JumpPadTilemap;
     public TileBase tileToSpawn;
     public TileBase OpenDoorTile;
+    public TileBase JumpPadAnimationTile;
+    public TileBase JumpPadStaticTile;
     public SoundEffects soundEffects;
     public float moveSpeed = 1f;
     public int[] characterGridPosition;
@@ -277,7 +280,7 @@ public class GridMovement : MonoBehaviour
         {
             if (hitTroughBox.collider != null) 
             {
-                Debug.Log("we are here");
+                
                 if (hitTroughBox.collider.gameObject.CompareTag("Wall")       ||
                     hitTroughBox.collider.gameObject.CompareTag("MovableBox") ||
                     hitTroughBox.collider.gameObject.CompareTag("Door")       ||
@@ -314,6 +317,30 @@ public class GridMovement : MonoBehaviour
         else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("JumpPad"))
         {
 
+             // Determine movement direction
+            int moveDirectionX = Mathf.Clamp(x, -1, 1); // Clamp to ensure it's -1, 0, or 1
+            int moveDirectionY = Mathf.Clamp(y, -1, 1); // Clamp to ensure it's -1, 0, or 1
+
+            // Convert the individual X and Y directions into a Vector3Int
+            Vector3Int direction = new Vector3Int(moveDirectionX, moveDirectionY, 0);
+
+            Vector3Int currentCell = JumpPadTilemap.WorldToCell(transform.position); // Get current (character's) cell position
+            Vector3Int targetCell = currentCell + direction; // Calculate target (box) cell position
+
+            if (JumpPadTilemap.HasTile(targetCell))
+            {
+                // Delete box
+                JumpPadTilemap.SetTile(targetCell, null);
+
+                JumpPadTilemap.SetTile(targetCell, JumpPadAnimationTile);
+
+
+                // Start coroutine to change tile after 0.5 seconds
+                StartCoroutine(ChangeTileAfterDelay(targetCell, 0.5f));
+            }
+
+
+
             if (absX > absY)
             {
                 newX = ((absX + 2) * x) + characterGridPosition[0];
@@ -323,6 +350,12 @@ public class GridMovement : MonoBehaviour
                 newY = ((absY + 2) * y) + characterGridPosition[1];
             }
             
+        }
+
+        if (newX == 11 || newX == 0 ||
+            newY == 11 || newY == 0)
+        {
+            return;
         }
 
         // Update position logic if no collision
@@ -348,6 +381,15 @@ public class GridMovement : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * speed);
         if (transform.position == targetPosition)
             moving = false;
+    }
+
+    private IEnumerator ChangeTileAfterDelay(Vector3Int cellPosition, float delay)
+    {
+        // Wait for the specified delay time
+        yield return new WaitForSeconds(delay);
+
+        // Change the tile
+        JumpPadTilemap.SetTile(cellPosition, JumpPadStaticTile);
     }
 
 
