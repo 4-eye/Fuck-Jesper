@@ -233,6 +233,24 @@ public class GridMovement : MonoBehaviour
                     
                 }
             }
+            else if (tile.name == "dog_door4")
+            {
+                if (DoorsTilemap.HasTile(targetCell))
+                {
+                    // Delete box
+                    DoorsTilemap.SetTile(targetCell, null);
+
+                    // Delete key from UI
+                    ui_manager.DeleteKeyUI();
+
+                    // Decrement key counter
+                    keyCounter -= 1;
+
+                    // stop movement before door is open
+                    return;
+
+                }
+            }
         }
         else if (hitAny.collider != null && hitAny.collider.gameObject.CompareTag("Key")) 
         {
